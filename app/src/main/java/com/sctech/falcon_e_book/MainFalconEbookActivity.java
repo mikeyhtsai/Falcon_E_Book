@@ -40,9 +40,12 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
     public Loader<List<Books>> onCreateLoader(int i, Bundle bundle) {
         String strQuerySubject = USGS_REQUEST_URL + mSubject+"&maxResults=20";
         Log.v(LOG_TAG, "Loader created: " + i);
-
+        TextView CurrentSubjectView = (TextView) findViewById(R.id.bookSubject);
+        CurrentSubjectView.setText("BookSubject:" + mSubject + "searing ...");
         return (mLoader =  new BookLoader(this, strQuerySubject));
     }
+
+
 
     @Override
     public void onLoadFinished(Loader<List<Books>> loader, List<Books> booksList) {
@@ -51,6 +54,9 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
         if (mAdapter != null) {
             mAdapter.clear();
         }
+
+        TextView CurrentSubjectView = (TextView) findViewById(R.id.bookSubject);
+        CurrentSubjectView.setText("BookSubject:" + mSubject + ".Enter new subject and click 'searching' on menu to start new search");
 
         // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
@@ -117,13 +123,9 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
 
         }
         else {
-            // Get a reference to the LoaderManager, in order to interact with loaders.
-  //          LoaderManager loaderManager = getLoaderManager();
 
-            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-            // because this activity implements the LoaderCallbacks interface).
-  //          loaderManager.initLoader(BOOKLIST_LOADER_ID, null, this);
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(BOOKLIST_LOADER_ID, null, this);
         }
     }
 
@@ -133,17 +135,8 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
         mSubject = edit.getText().toString();
         LoaderManager loaderManager = getLoaderManager();
 
-        if (mLoader == null) {
-
-            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-            // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(BOOKLIST_LOADER_ID, null, this);
-        }
-        else {
-            //Use restart loader to do new query search
-            loaderManager.restartLoader(BOOKLIST_LOADER_ID, null, this);
-        }
+         //Use restart loader to do new query search
+        loaderManager.restartLoader(BOOKLIST_LOADER_ID, null, this);
  }
 
     @Override
