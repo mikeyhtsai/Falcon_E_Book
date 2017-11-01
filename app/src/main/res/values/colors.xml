@@ -3,4 +3,23 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorList">#8E8EF1</color>
+
+    <!-- Text color for the details of the author in the list item -->
+    <color name="textColorBookAuthors">#24BAC0</color>
+
+    <!-- Text color for the title of the book in the list item -->
+    <color name="textColorBookTitle">#FBFDFD</color>
+    <color name="textColorBookDate">#F0E020</color>
+    <!-- Color for a books 0 to 100  -->
+    <color name="bookPage100">#4A7BA7</color>
+    <color name="bookPage200">#4A7BA7</color>
+    <color name="bookPage300">#4A7BA7</color>
+    <color name="bookPage400">#4A7BA7</color>
+    <color name="bookPage500">#4A7BA7</color>
+    <color name="bookPage600">#4A7BA7</color>
+    <color name="bookPage700">#4A7BA7</color>
+    <color name="bookPage800">#4A7BA7</color>
+    <color name="bookPage900">#4A7BA7</color>
+    <color name="bookpage1000plus">#C03823</color>
 </resources>
