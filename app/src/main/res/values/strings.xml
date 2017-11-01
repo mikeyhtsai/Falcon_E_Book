@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Book Searching</string>
+    <string name="app_name">FalconE Book Searching</string>
     <string name="action_searching">Searching Subject</string>
     <string name="action_settings">Setting</string>
     <string name="no_report">No Books found from server</string>
