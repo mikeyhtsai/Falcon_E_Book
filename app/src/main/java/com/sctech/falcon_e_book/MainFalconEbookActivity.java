@@ -38,7 +38,7 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
 
     @Override
     public Loader<List<Books>> onCreateLoader(int i, Bundle bundle) {
-        String strQuerySubject = USGS_REQUEST_URL + mSubject+"&Results=20";
+        String strQuerySubject = USGS_REQUEST_URL + mSubject+"&maxResults=20";
         Log.v(LOG_TAG, "Loader created: " + i);
 
         return (mLoader =  new BookLoader(this, strQuerySubject));
