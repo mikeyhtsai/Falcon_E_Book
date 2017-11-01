@@ -144,6 +144,7 @@ public class QueryUtils {
                 String date = "@"+ v.getString("publishedDate");
                 String url1 = v.getString("infoLink");
                 booksList.add(new Books(maturity, author, title, url1, date));
+                Log.v(LOG_TAG, "adding books  #"+i);
             }
 
         } catch (JSONException e) {

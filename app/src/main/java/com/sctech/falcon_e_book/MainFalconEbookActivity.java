@@ -141,6 +141,7 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
             loaderManager.initLoader(BOOKLIST_LOADER_ID, null, this);
         }
         else {
+            //Use restart loader to do new query search
             loaderManager.restartLoader(BOOKLIST_LOADER_ID, null, this);
         }
  }
