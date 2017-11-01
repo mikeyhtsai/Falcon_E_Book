@@ -32,6 +32,7 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
     public static final String LOG_TAG = MainFalconEbookActivity.class.getName();
     private BooksAdapter mAdapter;
     private TextView mEmptyView;
+    private Loader<List<Books>> mLoader = null;
 
     private static final int BOOKLIST_LOADER_ID = 1;
 
@@ -39,7 +40,8 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
     public Loader<List<Books>> onCreateLoader(int i, Bundle bundle) {
         String strQuerySubject = USGS_REQUEST_URL + mSubject+"&Results=20";
         Log.v(LOG_TAG, "Loader created: " + i);
-        return new BookLoader(this, strQuerySubject);
+
+        return (mLoader =  new BookLoader(this, strQuerySubject));
     }
 
     @Override
@@ -131,12 +133,17 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
         mSubject = edit.getText().toString();
         LoaderManager loaderManager = getLoaderManager();
 
-        // Initialize the loader. Pass in the int ID constant defined above and pass in null for
-        // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
-        // because this activity implements the LoaderCallbacks interface).
-        loaderManager.initLoader(BOOKLIST_LOADER_ID, null, this);
+        if (mLoader == null) {
 
-    }
+            // Initialize the loader. Pass in the int ID constant defined above and pass in null for
+            // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
+            // because this activity implements the LoaderCallbacks interface).
+            loaderManager.initLoader(BOOKLIST_LOADER_ID, null, this);
+        }
+        else {
+            loaderManager.restartLoader(BOOKLIST_LOADER_ID, null, this);
+        }
+ }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
