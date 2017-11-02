@@ -41,7 +41,8 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
         String strQuerySubject = USGS_REQUEST_URL + mSubject+"&maxResults=20";
         Log.v(LOG_TAG, "Loader created: " + i);
         TextView CurrentSubjectView = (TextView) findViewById(R.id.bookSubject);
-        CurrentSubjectView.setText("BookSubject:" + mSubject + "searing ...");
+        mAdapter.clear();
+        CurrentSubjectView.setText("BookSubject:" + mSubject + ", searing ...");
         return (mLoader =  new BookLoader(this, strQuerySubject));
     }
 
@@ -56,7 +57,7 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
         }
 
         TextView CurrentSubjectView = (TextView) findViewById(R.id.bookSubject);
-        CurrentSubjectView.setText("BookSubject:" + mSubject + ".Enter new subject and click 'searching' on menu to start new search");
+        CurrentSubjectView.setText("BookSubject: " + mSubject + ", Enter new subject and click 'searching' on menu");
 
         // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
