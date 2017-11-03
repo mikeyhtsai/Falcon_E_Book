@@ -22,4 +22,11 @@
     <color name="bookPage800">#4A7BA7</color>
     <color name="bookPage900">#4A7BA7</color>
     <color name="bookpage1000plus">#C03823</color>
+
+    <!-- Primary color for the editor -->
+    <color name="editorColorPrimary">#2D3640</color>
+
+    <!-- Primary dark color for the editor -->
+    <color name="editorColorPrimaryDark">#394450</color>
+
 </resources>

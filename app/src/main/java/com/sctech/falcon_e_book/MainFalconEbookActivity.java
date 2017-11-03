@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +34,8 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
     private BooksAdapter mAdapter;
     private TextView mEmptyView;
     private Loader<List<Books>> mLoader = null;
-
+    /** Database helper that will provide us access to the database */
+    private PetDbHelper mDbHelper;
     private static final int BOOKLIST_LOADER_ID = 1;
 
     @Override
@@ -128,6 +130,20 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(BOOKLIST_LOADER_ID, null, this);
         }
+
+        // Setup FAB to open EditorActivity
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainFalconEbookActivity.this, criteria.class);
+                startActivity(intent);
+            }
+        });
+
+        // To access our database, we instantiate our subclass of SQLiteOpenHelper
+        // and pass the context, which is the current activity.
+        mDbHelper = new PetDbHelper(this);
     }
 
     public void getBookSubjec(MenuItem item)
