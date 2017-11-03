@@ -158,17 +158,21 @@ public class criteria extends AppCompatActivity {
                 insertPet();
                 // Exit activity
                 finish();
-                Intent intent = new Intent(this, criteria.class);
-                startActivity(intent);
+
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Do nothing for now
                 return true;
+            //Respond to the home button
+            case R.id.action_home:
+                Intent intent = new Intent(this, MainFalconEbookActivity.class);
+                startActivity(intent);
+                return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
                 // Navigate back to parent activity (CatalogActivity)
-                NavUtils.navigateUpFromSameTask(this);
+                NavUtils.navigateUpFromSameTask(this );
                 return true;
         }
         return super.onOptionsItemSelected(item);
