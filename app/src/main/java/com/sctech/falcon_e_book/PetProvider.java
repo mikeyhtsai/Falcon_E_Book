@@ -51,7 +51,6 @@ public class PetProvider extends ContentProvider {
         // "content://com.example.android.pets/pets" (without a number at the end) doesn't match.
         sUriMatcher.addURI(PetContract.CONTENT_AUTHORITY, PetContract.PATH_PETS + "/#", PET_ID);
 
-        // TODO: Add 2 content URIs to URI matcher
     }
     /**
      * Initialize the provider and the database helper object.

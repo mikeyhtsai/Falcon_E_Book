@@ -37,6 +37,8 @@ public final class PetContract {
         /** The content URI to access the pet data in the provider */
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS);
 
+        public static final Uri CONTENT_URI_ERR = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PETS+"/"+"4");
+
         /** Name of database table for pets */
         public final static String TABLE_NAME = "pets";
 

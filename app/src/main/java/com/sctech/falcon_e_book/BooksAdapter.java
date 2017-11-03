@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import static com.sctech.falcon_e_book.R.id.maturity;
-
 /**
  * Created by miketsai on 10/31/2017.
  */
@@ -40,7 +38,7 @@ public class BooksAdapter extends ArrayAdapter<Books> {
         // Set the color on the magnitude circle
         Books currentBookList = getItem(position);
 
-        TextView maturityView = (TextView) listItemView.findViewById(maturity);
+        TextView maturityView = (TextView) listItemView.findViewById(R.id.maturity);
         /*
         GradientDrawable magnitudeCircle = (GradientDrawable) magnitudeView.getBackground();
         // Get the appropriate background color based on the current earthquake magnitude
