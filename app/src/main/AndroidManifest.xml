@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".criteria">
         </activity>
+        <activity android:name=".ShowDataActivity">
+        </activity>
     </application>
 
 </manifest>

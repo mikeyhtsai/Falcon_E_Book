@@ -35,7 +35,7 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
     private TextView mEmptyView;
     private Loader<List<Books>> mLoader = null;
     /** Database helper that will provide us access to the database */
-    private PetDbHelper mDbHelper;
+
     private static final int BOOKLIST_LOADER_ID = 1;
 
     @Override
@@ -92,7 +92,7 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
         mEmptyView = (TextView) findViewById(R.id.emptyView);
         bookListView.setEmptyView(mEmptyView);
 
-        // Create a new adapter that takes an empty list of earthquakes as input
+         // Create a new adapter that takes an empty list of earthquakes as input
         mAdapter = new BooksAdapter(this, new ArrayList<Books>());
 
         // Set the adapter on the {@link ListView}
@@ -138,13 +138,18 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
             public void onClick(View view) {
                 Intent intent = new Intent(MainFalconEbookActivity.this, criteria.class);
                 startActivity(intent);
+
+
+
+
             }
         });
 
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        mDbHelper = new PetDbHelper(this);
+
     }
+
+
+
 
     public void getBookSubjec(MenuItem item)
     {
