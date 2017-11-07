@@ -136,7 +136,7 @@ public class MainFalconEbookActivity extends AppCompatActivity implements Loader
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainFalconEbookActivity.this, criteria.class);
+                Intent intent = new Intent(MainFalconEbookActivity.this, AddPetActivity.class);
                 startActivity(intent);
 
 

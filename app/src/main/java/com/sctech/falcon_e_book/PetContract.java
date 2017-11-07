@@ -1,6 +1,9 @@
 package com.sctech.falcon_e_book;
 
 import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -16,6 +19,7 @@ public final class PetContract {
     public static final String CONTENT_AUTHORITY = "com.sctech.falcon_e_book";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_PETS = "pets";
+
 
     /**
      * Inner class that defines constant values for the pets database table.
@@ -96,6 +100,29 @@ public final class PetContract {
                 return true;
             }
             return false;
+        }
+
+        public static int petExist(String petName, Context context) {
+            int col = -1;
+                // Create database helper
+            PetDbHelper mDbHelper = new PetDbHelper(context);
+            // Gets the database in write mode
+            SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+
+            try {
+                Cursor c = db.query(TABLE_NAME, null, COLUMN_PET_NAME + "=?", new String[]{String.valueOf(petName)},null, null, null);
+
+                if ((col = c.getPosition()) != -1) {
+                    return col;
+                }
+            }
+
+            catch(Exception e){
+                e.printStackTrace();
+            }
+
+            return -1;
         }
     }
 

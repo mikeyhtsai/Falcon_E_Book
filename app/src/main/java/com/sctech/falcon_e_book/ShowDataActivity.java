@@ -1,28 +1,35 @@
 package com.sctech.falcon_e_book;
 
+import android.app.LoaderManager;
+import android.content.ContentUris;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.sctech.falcon_e_book.PetContract.PetEntry;
 
 /**
  * Created by miketsai on 11/3/2017.
  */
 
-public class ShowDataActivity  extends AppCompatActivity {
+public class ShowDataActivity  extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private PetDbHelper mDbHelper;
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the pets database.
-     */
-    private void displayDatabaseInfo() {
-        // Create and/or open a database to read from it
-      //  SQLiteDatabase db = mDbHelper.getReadableDatabase();
+    private static final int PET_LOADER_ID = 2;
+    private CursorLoader mLoader = null;
+    private PetCursorAdapter mAdapter = null;
+    public static final String LOG_TAG = ShowDataActivity.class.getName();
 
-        // Define a projection that specifies which columns from the database
-        // you will actually use after this query.
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
                 PetContract.PetEntry._ID,
                 PetContract.PetEntry.COLUMN_PET_NAME,
@@ -30,23 +37,27 @@ public class ShowDataActivity  extends AppCompatActivity {
                 PetContract.PetEntry.COLUMN_PET_GENDER,
                 PetContract.PetEntry.COLUMN_PET_WEIGHT };
 
-        // Perform a query on the provider using the ContentResolver.
-        // Use the {@link PetEntry#CONTENT_URI} to access the pet data.
-        // intentionally make error
-        Cursor cursor = getContentResolver().query(
-                PetContract.PetEntry.CONTENT_URI_ERR,   // The content URI of the words table
-                projection,             // The columns to return for each row
-                null,                   // Selection criteria
-                null,                   // Selection criteria
-                null);                  // The sort order for the returned rows
+        Log.v(LOG_TAG, "Pet Loader created: " + i);
 
-       ListView petListView = (ListView) findViewById(R.id.listPets);
-       View emptyView = findViewById(R.id.empty_view);
-       petListView.setEmptyView(emptyView);
-       PetCursorAdapter adapter = new PetCursorAdapter(this, cursor);
-       petListView.setAdapter(adapter);
+        return  new CursorLoader(this,
+                PetContract.PetEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
     }
 
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
+        mAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+     mAdapter.swapCursor(null);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +65,33 @@ public class ShowDataActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_displaydata);
 
+        Intent intent = getIntent();
+
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
         mDbHelper = new PetDbHelper(this);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
+        ListView petListView = (ListView) findViewById(R.id.listPets);
+        View emptyView = findViewById(R.id.empty_view);
+
+        petListView.setEmptyView(emptyView);
+        mAdapter = new PetCursorAdapter(this, null);
+        petListView.setAdapter(mAdapter);
+
+        getLoaderManager().initLoader(PET_LOADER_ID, null, this);
+
+        petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Cursor cursor = db.
+                Intent intent = new Intent(ShowDataActivity.this, AddPetActivity.class);
+                Uri currentPetUri = ContentUris.withAppendedId(PetEntry.CONTENT_URI, id);
+
+                intent.setData(currentPetUri);
+                startActivity(intent);
+
+            }
+        });
     }
 
 }
