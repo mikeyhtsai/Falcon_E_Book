@@ -213,9 +213,9 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
         // Gets the database in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        cursor = PetContract.PetEntry.petExist(nameString, this);
 
-        if (cursor != null) {
+        if (mCurrentPetUri != null) {
+             cursor = PetContract.PetEntry.petExist(nameString, this);
              int idColumnIndex = cursor.getColumnIndex(PetContract.PetEntry._ID);
              int currentId = cursor.getInt(idColumnIndex);
              newRowId = db.update(PetContract.PetEntry.TABLE_NAME, values, PetContract.PetEntry._ID +"=?", new String[] {Integer.toString(currentId)} );
