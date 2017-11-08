@@ -246,24 +246,28 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
-            case R.id.action_save:
+            case R.id.action_save: {
                 // Save pet to database
                 savePet();
                 // Exit activity
                 finish();
-
+                Intent intent = new Intent(this, ShowDataActivity.class);
+                startActivity(intent);
+            }
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 // Do nothing for now
                 return true;
             //Respond to the home button
-            case R.id.action_home:
+            case R.id.action_home: {
                 Intent intent = new Intent(this, MainFalconEbookActivity.class);
                 startActivity(intent);
+            }
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
