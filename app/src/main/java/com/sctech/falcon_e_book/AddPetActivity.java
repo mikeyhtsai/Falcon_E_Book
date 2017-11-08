@@ -47,7 +47,6 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
     private int mGender = PetContract.PetEntry.GENDER_UNKNOWN;
 
     private Uri mCurrentPetUri;
-    private PetCursorAdapter mAdapter = null;
 
     private static final int EXISTING_PET_LOADER_ID = 2;
 
@@ -109,7 +108,7 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter.swapCursor(null);
+     //   mAdapter.swapCursor(null);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +189,7 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
      * Get user input from editor and save new pet into database.
      */
     private void savePet() {
-        int col;
+        Cursor cursor;
         long newRowId;
 
         // Read from input fields
@@ -214,8 +213,12 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
         // Gets the database in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        if ((col = PetContract.PetEntry.petExist(nameString, this)) != -1) {
-             newRowId = db.update(PetEntry.TABLE_NAME, values, PetEntry.COLUMN_PET_NAME +"=?", new String[] {nameString} );
+        cursor = PetContract.PetEntry.petExist(nameString, this);
+
+        if (cursor != null) {
+             int idColumnIndex = cursor.getColumnIndex(PetContract.PetEntry._ID);
+             int currentId = cursor.getInt(idColumnIndex);
+             newRowId = db.update(PetContract.PetEntry.TABLE_NAME, values, PetContract.PetEntry._ID +"=?", new String[] {Integer.toString(currentId)} );
         }
         else {
             // Insert a new row for pet in the database, returning the ID of that new row.

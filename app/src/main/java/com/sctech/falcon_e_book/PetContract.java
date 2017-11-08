@@ -102,8 +102,14 @@ public final class PetContract {
             return false;
         }
 
-        public static int petExist(String petName, Context context) {
-            int col = -1;
+        public static Cursor petExist(String petName, Context context) {
+            Cursor c = null;
+            String[] columns = {
+                    PetContract.PetEntry._ID,
+                    PetContract.PetEntry.COLUMN_PET_NAME,
+                    PetContract.PetEntry.COLUMN_PET_BREED,
+                    PetContract.PetEntry.COLUMN_PET_GENDER,
+                    PetContract.PetEntry.COLUMN_PET_WEIGHT };
                 // Create database helper
             PetDbHelper mDbHelper = new PetDbHelper(context);
             // Gets the database in write mode
@@ -111,10 +117,10 @@ public final class PetContract {
 
 
             try {
-                Cursor c = db.query(TABLE_NAME, null, COLUMN_PET_NAME + "=?", new String[]{String.valueOf(petName)},null, null, null);
+                c = db.query(TABLE_NAME, columns, COLUMN_PET_NAME + "=?", new String[]{petName}, null, null, null );
 
-                if ((col = c.getPosition()) != -1) {
-                    return col;
+                if (c != null) {
+                    c.moveToFirst();
                 }
             }
 
@@ -122,7 +128,7 @@ public final class PetContract {
                 e.printStackTrace();
             }
 
-            return -1;
+            return c;
         }
     }
 
