@@ -119,8 +119,8 @@ public final class PetContract {
             try {
                 c = db.query(TABLE_NAME, columns, COLUMN_PET_NAME + "=?", new String[]{petName}, null, null, null );
 
-                if (c != null) {
-                    c.moveToFirst();
+                if ( (c != null) && (c.getCount() != 0)) {
+                    return(c);
                 }
             }
 
@@ -128,7 +128,7 @@ public final class PetContract {
                 e.printStackTrace();
             }
 
-            return c;
+            return null;
         }
     }
 

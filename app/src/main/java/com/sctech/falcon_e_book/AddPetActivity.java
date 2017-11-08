@@ -6,7 +6,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -189,8 +188,6 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
      * Get user input from editor and save new pet into database.
      */
     private void savePet() {
-        Cursor cursor;
-        long newRowId;
 
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
@@ -207,33 +204,35 @@ public class AddPetActivity extends AppCompatActivity  implements LoaderManager.
         values.put(PetContract.PetEntry.COLUMN_PET_GENDER, mGender);
         values.put(PetContract.PetEntry.COLUMN_PET_WEIGHT, weight);
 
-        // Create database helper
-        PetDbHelper mDbHelper = new PetDbHelper(this);
+        if (mCurrentPetUri == null) {
+            // This is a NEW pet, so insert a new pet into the provider,
+            // returning the content URI for the new pet.
+            Uri newUri = getContentResolver().insert(PetContract.PetEntry.CONTENT_URI, values);
 
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-
-        if (mCurrentPetUri != null) {
-             cursor = PetContract.PetEntry.petExist(nameString, this);
-             int idColumnIndex = cursor.getColumnIndex(PetContract.PetEntry._ID);
-             int currentId = cursor.getInt(idColumnIndex);
-             newRowId = db.update(PetContract.PetEntry.TABLE_NAME, values, PetContract.PetEntry._ID +"=?", new String[] {Integer.toString(currentId)} );
-        }
-        else {
-            // Insert a new row for pet in the database, returning the ID of that new row.
-             newRowId = db.insert(PetContract.PetEntry.TABLE_NAME, null, values);
-        }
-        // Show a toast message depending on whether or not the insertion was successful
-        if (newRowId == -1) {
-            // If the row ID is -1, then there was an error with insertion.
-            Toast.makeText(this, "Error with saving pet", Toast.LENGTH_SHORT).show();
+            // Show a toast message depending on whether or not the insertion was successful.
+            if (newUri == null) {
+                // If the new content URI is null, then there was an error with insertion.
+                Toast.makeText(this, "Error with saving pet", Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the insertion was successful and we can display a toast.
+                Toast.makeText(this, "Pet saved with row id: " + newUri, Toast.LENGTH_SHORT).show();
+            }
         } else {
-            // Otherwise, the insertion was successful and we can display a toast with the row ID.
-            Toast.makeText(this, "Pet saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
+            // Otherwise this is an EXISTING pet, so update the pet with content URI: mCurrentPetUri
+            // and pass in the new ContentValues. Pass in null for the selection and selection args
+            // because mCurrentPetUri will already identify the correct row in the database that
+            // we want to modify.
+            int rowsAffected = getContentResolver().update(mCurrentPetUri, values, null, null);
+            // Show a toast message depending on whether or not the update was successful.
+            if (rowsAffected == 0) {
+                // If no rows were affected, then there was an error with the update.
+                Toast.makeText(this, "Error with saving pet", Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the update was successful and we can display a toast.
+                Toast.makeText(this, "Pet saved with row id: " + rowsAffected, Toast.LENGTH_SHORT).show();
+            }
         }
     }
-
 
 
     @Override
