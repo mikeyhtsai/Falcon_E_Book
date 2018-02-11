@@ -1,9 +1,6 @@
 package com.sctech.falcon_e_book;
 
 import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -102,8 +99,9 @@ public final class PetContract {
             return false;
         }
 
-        public static Cursor petExist(String petName, Context context) {
-            Cursor c = null;
+        /* Not used, but kept for reference.
+        public static int petExist(String petName, Context context) {
+            int col = -1;
             String[] columns = {
                     PetContract.PetEntry._ID,
                     PetContract.PetEntry.COLUMN_PET_NAME,
@@ -117,10 +115,10 @@ public final class PetContract {
 
 
             try {
-                c = db.query(TABLE_NAME, columns, COLUMN_PET_NAME + "=?", new String[]{petName}, null, null, null );
+                Cursor c = db.query(TABLE_NAME, columns, COLUMN_PET_NAME + "=?", new String[]{petName}, null, null, null );
 
-                if ( (c != null) && (c.getCount() != 0)) {
-                    return(c);
+                if ((col = c.getPosition()) != -1) {
+                    return col;
                 }
             }
 
@@ -128,8 +126,9 @@ public final class PetContract {
                 e.printStackTrace();
             }
 
-            return null;
+            return -1;
         }
+        */
     }
 
 }
